@@ -177,11 +177,26 @@
          message.style.color = 'red';
       });
    });
+    function adjustHeroHeight() {
+  const hero = document.querySelector('.hero');
+  if(hero){
+    hero.style.height = window.innerHeight + 'px';
+  }
+}
+
+// Выполнить при загрузке страницы
+window.addEventListener('load', adjustHeroHeight);
+
+// Выполнить при изменении размера окна или повороте экрана
+window.addEventListener('resize', adjustHeroHeight);
+window.addEventListener('orientationchange', adjustHeroHeight);
+  
 
    </script>
 
    </body>
   </html>
+
 
 
 
