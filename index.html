@@ -534,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Формируем список товаров
-  let items = cart.map(i => i.name + " €" + i.price.toFixed(2)).join("\n");
+   let items = cart.map(i => `[${i.type}] ${i.name} €${i.price.toFixed(2)}`).join("\n");
 
   const message = `🛒 ORDER
 ${items}
