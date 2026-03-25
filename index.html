@@ -325,6 +325,35 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[type="checkbox"]');
 
   window.cart = [];
+    const nameInput  = document.getElementById('custName');
+    const phoneInput = document.getElementById('custPhone');
+    const addrInput  = document.getElementById('custAddr');   
+
+  function updateCustomerFields() {
+   //==== функция скрытых полей ====
+
+ const cb = document.querySelector('input[type="checkbox"]:checked');
+
+  if(!cb) return;
+
+  const type =
+    cb.parentElement.textContent.trim();
+
+  if(type.includes("Delivery")) {
+
+    nameInput.style.display  = "block";
+    phoneInput.style.display = "block";
+    addrInput.style.display  = "block";
+
+  } else {
+
+    nameInput.style.display  = "none";
+    phoneInput.style.display = "none";
+    addrInput.style.display  = "none";
+
+  }
+
+}
 
   /* ---------- СТИЛИ КОРЗИНЫ ---------- */
 
@@ -525,14 +554,15 @@ Time: ${new Date().toLocaleString()}`;
 
   checkboxes.forEach(cb => {
 
-    cb.addEventListener(
-      'change',
-      updateCartDisplay
-    );
-
+  cb.addEventListener('change', function() {
+    updateCartDisplay();
+    updateCustomerFields();
   });
 
 });
+ updateCustomerFields();
+});
+
 
 </script>
 <script>
