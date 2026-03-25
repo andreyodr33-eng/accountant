@@ -44,8 +44,13 @@ z-index:999;
 <b>Cart</b>
 
 <div id="cartItems"></div>
-
 <div id="cartTotal"></div>
+
+<div id="cartMsg" style="
+  margin-top:6px;
+  font-weight:bold;
+  display:none;
+ "></div>     
 
 <input id="custName" placeholder="Name">
 <input id="custPhone" placeholder="Phone">
@@ -492,65 +497,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
+ /* ---------- ОТПРАВКА ---------- */
 
+   sendBtn.addEventListener('click', function() {
 
-  /* ---------- ОТПРАВКА ---------- */
+  // Получаем элементы
+  const cartMsg   = document.getElementById('cartMsg');
+  const nameInput  = document.getElementById('custName');
+  const phoneInput = document.getElementById('custPhone');
+  const addrInput  = document.getElementById('custAddr');
 
-  sendBtn.addEventListener(
-    'click',
-    function() {
+  // Сбрасываем предыдущее сообщение
+  cartMsg.style.display = "none";
+  cartMsg.textContent = "";
 
-      if(cart.length === 0) {
-        alert("Корзина пуста");
-        return;
-      }
+  if(cart.length === 0) {
+    cartMsg.style.display = "block";
+    cartMsg.style.color = "red";
+    cartMsg.textContent = "❌ Корзина пуста";
+    return;
+  }
 
-      const name =
-        document.getElementById('custName').value;
+  const name  = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+  const addr  = addrInput.value.trim();
 
-      const phone =
-        document.getElementById('custPhone').value;
+  const checkedBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+  const anyDelivery = checkedBoxes.some(cb => cb.parentElement.textContent.includes("Delivery"));
 
-      const addr =
-        document.getElementById('custAddr').value;
+  // Проверка только для Delivery
+  if(anyDelivery && (!name || !phone || !addr)) {
+    cartMsg.style.display = "block";
+    cartMsg.style.color = "red";
+    cartMsg.textContent = "❌ Заполните все поля для Delivery";
+    return;
+  }
 
+  // Формируем список товаров
+  let items = cart.map(i => i.name + " €" + i.price.toFixed(2)).join("\n");
 
-      let items = cart.map(i => `[${i.type}] ${i.name} €${i.price.toFixed(2)}`).join("\n");
-      
-
-
-      const message =
-
-`🛒 ORDER
-
+  const message = `🛒 ORDER
 ${items}
-
 Name: ${name}
 Phone: ${phone}
 Address: ${addr}
-
 Time: ${new Date().toLocaleString()}`;
 
+  fetch("https://my-worker.andreyodr33.workers.dev", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({text: message})
+  })
+  .then(() => {
+    cartMsg.style.display = "block";
+    cartMsg.style.color = "#00ff88";
+    cartMsg.textContent = "✅ Заказ отправлен";
 
-      fetch(
-        "https://my-worker.andreyodr33.workers.dev",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json"
-          },
-          body: JSON.stringify({
-            text: message
-          })
-        }
-      );
+    // Очистка корзины
+    cart = [];
+    cartItems.innerHTML = "";
+    cartTotal.textContent = "Total: €0.00";
 
-    }
-  );
+    setTimeout(() => { cartMsg.style.display = "none"; }, 2000);
+  })
+  .catch(() => {
+    cartMsg.style.display = "block";
+    cartMsg.style.color = "red";
+    cartMsg.textContent = "❌ Ошибка отправки";
+  });
 
+});
 
 
-  /* ---------- СЛУШАЕМ ВСЕ ЧЕКБОКСЫ ---------- */
+ /* ---------- СЛУШАЕМ ВСЕ ЧЕКБОКСЫ ---------- */
 
   checkboxes.forEach(cb => {
 
