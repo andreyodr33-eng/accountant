@@ -27,7 +27,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let watchId;
 let route = [];
-
+let routeLine;
 function startTracking() {
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
@@ -46,7 +46,14 @@ function stopTracking() {
 
 function loadRoute() {
   const saved = JSON.parse(localStorage.getItem('route')) || [];
-  L.polyline(saved, { color: 'red' }).addTo(map);
+
+  // удалить старую линию, если есть
+  if (routeLine) {
+    map.removeLayer(routeLine);
+  }
+
+  // нарисовать новую
+  routeLine = L.polyline(saved, { color: 'red' }).addTo(map);
 }
 </script>
 <script>
