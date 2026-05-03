@@ -62,6 +62,7 @@ html, body {
 <button onclick="startTracking()">Старт</button>
 <button onclick="stopTracking()">Стоп</button>
 <button onclick="loadRoute()">Показать маршрут</button>
+<p id="stats">Дистанция: 0 км | Время: 0 cек</p>  
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -74,8 +75,26 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let currentMarker;
 let watchId;
 let route = [];
+let totalDistance = 0;
+let startTime = 0; 
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // радиус Земли в км
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
 
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}  
 function startTracking() {
+startTime = Date.now();
+totalDistance = 0;  
   route = [];
   if (routeLine) {
     map.removeLayer(routeLine);
@@ -84,8 +103,25 @@ function startTracking() {
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
     const newPoint = [latitude, longitude];
+const elapsed = Math.floor((Date.now() - startTime) / 1000);
+
+document.getElementById("stats").innerText =
+  `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${elapsed} сек`;
+// считаем расстояние
+if (route.length > 0) {
+  const last = route[route.length - 1];
+
+  totalDistance += getDistance(
+    last[0],
+    last[1],
+    latitude,
+    longitude
+  );
+}
+
+route.push(newPoint);
     
-    route.push(newPoint);
+    
     localStorage.setItem('route', JSON.stringify(route));
     
     routeLine.addLatLng(newPoint);
@@ -129,6 +165,22 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/accountant/servise-worker.js');
 }
 </script>
+<script>
+ function stopTracking() {
+  navigator.geolocation.clearWatch(watchId);
+
+  if (currentMarker) {
+    map.removeLayer(currentMarker);
+    currentMarker = null;
+  }
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+
+  alert(
+    `Пройдено: ${totalDistance.toFixed(2)} км\nВремя: ${elapsed} сек`
+  );
+} 
+</script>  
 </body>
 </html>
 
