@@ -56,7 +56,7 @@ html, body {
 }
 
 .stats-overlay {
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -74,11 +74,13 @@ html, body {
   </style>
 </head>
 <body>
-<div id="map-container" style="position: relative; height: 400px;">  
-<p id="stats">Дистанция: 0 км | Время: 0 cек</p>
-<div id="map"> style="height: 100%;"></div>  
-</div>  
-<div id="map"></div>
+
+<p id="stats" class="starts-overlay">
+  Дистанция: 0 км | Время: 0 cек
+</p>
+<div id="map"></div>  
+ 
+
 <div class="controls">
 <button onclick="startTracking()">Старт</button>
 <button onclick="stopTracking()">Стоп</button>
