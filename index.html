@@ -6,18 +6,65 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Убираем всё лишнее */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Карта на весь экран */
+#map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Панель кнопок */
+.controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+
+  /* ВАЖНО для iPhone */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+}
+
+/* Кнопки */
+.controls button {
+  flex: 1;
+  padding: 15px;
+  font-size: 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #1E88E5;
+  color: white;
+}
+  </style>
 </head>
 <body>
-
-<h2>Маршрут</h2>
+<div id="map"></div>
+<div class="controls">
 <button onclick="startTracking()">Старт</button>
 <button onclick="stopTracking()">Стоп</button>
 <button onclick="loadRoute()">Показать маршрут</button>
-
-<div id="map" style="height: 400px;"></div>
-
+</div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+<script src="app.js"></script>
 <script>
 let map = L.map('map').setView([50.45, 30.52], 13); // Киев
 let routeLine;
