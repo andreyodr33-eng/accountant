@@ -54,10 +54,29 @@ html, body {
   background: #1E88E5;
   color: white;
 }
+
+.stats-overlay {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+
+  padding: 8px 12px;
+  border-radius: 10px;
+
+  font-size: 14px;
+  z-index: 1000;
+}
+    
   </style>
 </head>
 <body>
-<p id="stats">Дистанция: 0 км | Время: 0 cек</p>  
+<div id="map-container" style="position: relative;">  
+<p id="stats">Дистанция: 0 км | Время: 0 cек</p>
+</div>  
 <div id="map"></div>
 <div class="controls">
 <button onclick="startTracking()">Старт</button>
