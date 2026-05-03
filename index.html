@@ -33,7 +33,7 @@ function startTracking() {
   if (routeLine) {
     map.removeLayer(routeLine);
   }
-  routeLine = L.polyline([], { color: 'red' }).addTo(map);
+  routeLine = L.polyline([], { color: 'blue' }).addTo(map);
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
     const newPoint = [latitude, longitude];
@@ -70,7 +70,7 @@ function loadRoute() {
   }
 
   // нарисовать новую
-  routeLine = L.polyline(saved, { color: 'red' }).addTo(map);
+  routeLine = L.polyline(saved, { color: 'blue' }).addTo(map);
 }
 </script>
 <script>
