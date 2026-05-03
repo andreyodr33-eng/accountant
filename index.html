@@ -29,6 +29,7 @@ let watchId;
 let route = [];
 let routeLine;
 function startTracking() {
+alert ("Cтарт нажат");  
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
 
