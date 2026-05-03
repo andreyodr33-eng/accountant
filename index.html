@@ -20,7 +20,7 @@
 
 <script>
 let map = L.map('map').setView([50.45, 30.52], 13); // Киев
-
+let routeLine;
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
 }).addTo(map);
@@ -29,13 +29,17 @@ let watchId;
 let route = [];
 let routeLine;
 function startTracking() {
-  
+  rout = [];
+  if (routeLine) {
+    map.removeLine(routeLine);
+  }
+  routeLine = L.polyline([], { color: 'red' }).addTo(map);
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
 
     route.push([latitude, longitude]);
     localStorage.setItem('route', JSON.stringify(route));
-
+    routeLine.addLatLng(newPoint);
     L.marker([latitude, longitude]).addTo(map);
     map.setView([latitude, longitude]);
   });
