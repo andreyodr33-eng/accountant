@@ -59,12 +59,12 @@ function startTracking() {
                                                  
   function stopTracking() {
   navigator.geolocation.clearWatch(watchId);
-}
+
 if (currentMarker) {
   map.removeLayer(currentMarker);
   currentMarker = null;
  }
-
+}
 function loadRoute() {
   const saved = JSON.parse(localStorage.getItem('route')) || [];
 
