@@ -208,7 +208,25 @@ if ('serviceWorker' in navigator) {
     `Пройдено: ${totalDistance.toFixed(2)} км\nВремя: ${elapsed} сек`
   );
 } 
-</script>  
+</script> 
+  <script>
+  function loadRoute() {
+  const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+  routes.forEach((r) => {
+    const line = L.polyline(r.route, { color: 'blue' }).addTo(map);
+
+    // 📍 подпись в конце маршрута
+    const lastPoint = r.route[r.route.length - 1];
+
+    const text = 📏 ${r.distance.toFixed(2)} км<br>⏱ ${r.time} сек;
+
+    L.marker(lastPoint)
+      .addTo(map)
+      .bindPopup(text);
+  });
+}
+</script>    
 </body>
 </html>
 
