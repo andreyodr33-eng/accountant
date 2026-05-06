@@ -161,24 +161,32 @@ route.push(newPoint);
 }
                                                  
   function stopTracking() {
+ 
   navigator.geolocation.clearWatch(watchId);
 
-if (currentMarker) {
-  map.removeLayer(currentMarker);
-  currentMarker = null;
- }
-}
-function loadRoute() {
-  const saved = JSON.parse(localStorage.getItem('route')) || [];
-
-  // удалить старую линию, если есть
-  if (routeLine) {
-    map.removeLayer(routeLine);
+  if (currentMarker) {
+    map.removeLayer(currentMarker);
+    currentMarker = null;
   }
 
-  // нарисовать новую
-  routeLine = L.polyline(saved, { color: 'blue' }).addTo(map);
-}
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+
+  let routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+  routes.push({
+    route: route,
+    distance: totalDistance,
+    time: elapsed
+  });
+
+  if (routes.length > 5) {
+    routes.shift();
+  }
+
+  localStorage.setItem('routes', JSON.stringify(routes));
+
+  alert("Маршрут сохранён");
+} 
 </script>
 <script>
 if ('serviceWorker' in navigator) {
