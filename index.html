@@ -204,7 +204,7 @@ if ('serviceWorker' in navigator) {
     // 📍 подпись в конце маршрута
     const lastPoint = r.route[r.route.length - 1];
 
-    const text = 📏 ${r.distance.toFixed(2)} км<br>⏱ ${r.time} сек;
+    const text = `📏 ${r.distance.toFixed(2)} км<br>⏱ ${r.time} сек`;
 
     L.marker(lastPoint)
       .addTo(map)
