@@ -193,22 +193,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/accountant/servise-worker.js');
 }
 </script>
-<script>
- function stopTracking() {
-  navigator.geolocation.clearWatch(watchId);
-
-  if (currentMarker) {
-    map.removeLayer(currentMarker);
-    currentMarker = null;
-  }
-
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
-
-  alert(
-    `Пройдено: ${totalDistance.toFixed(2)} км\nВремя: ${elapsed} сек`
-  );
-} 
-</script> 
+ 
   <script>
   function loadRoute() {
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
