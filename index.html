@@ -228,7 +228,7 @@ function startTracking() {
     map.removeLayer(currentMarker);
     currentMarker = null;
   }
-    if (route.length < 2) {
+    if (totalDistance < 0,01) {
       alert("Маршрут слишком короткий");
       return;
   }
