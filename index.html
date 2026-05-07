@@ -253,6 +253,17 @@ function openHistory() {
 
 function closeHistory() {
   document.getElementById("historyPanel").classList.remove("active");
+  
+  activeRoute = null;
+  
+  if (userRouteLine) {
+    map.removeLay  er(userRouteLine);
+    userRouteLine = null;
+   }
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
 }
 </script>
 <script>
