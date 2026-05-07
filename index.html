@@ -184,6 +184,7 @@ routeLine.addLatLng(newPoint);
       map.setView(newPoint, 16);
       firstLocation = false;
   }
+  }, 
    (err) => {
      alert("Ошибка геолокации: " + err.message);
  },
