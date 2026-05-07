@@ -155,10 +155,7 @@ startTime = Date.now();
 totalDistance = 0;  
   route = [];
   firstLocation = true;
-  if (routeLine) {
-    map.removeLayer(routeLine);
-  }
-  routeLine = L.polyline([], { color: 'blue' }).addTo(map);
+ 
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
     const newPoint = [latitude, longitude];
