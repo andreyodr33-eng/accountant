@@ -151,6 +151,7 @@ function startTracking() {
 startTime = Date.now();
 totalDistance = 0;  
   route = [];
+  firstLocation = true;
   if (routeLine) {
     map.removeLayer(routeLine);
   }
