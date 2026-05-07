@@ -120,6 +120,7 @@ html, body {
 <script>
 let map = L.map('map').setView([50.45, 30.52], 13); // Киев
 let routeLine;
+let displayedRoutes = [];  
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
 }).addTo(map);
@@ -229,7 +230,7 @@ function closeHistory() {
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/accountant/servise-worker.js');
+  navigator.serviceWorker.register('./service-worker.js');
 }
 </script>
  
@@ -241,7 +242,7 @@ if ('serviceWorker' in navigator) {
   }
   routes.forEach((r) => {
     const line = L.polyline(r.route, { color: 'blue' }).addTo(map);
-
+    displayedRoutes.push(line);
     // 📍 подпись в конце маршрута
     const lastPoint = r.route[r.route.length - 1];
 
@@ -284,9 +285,16 @@ function deleteRoute(index) {
 
   localStorage.setItem('routes', JSON.stringify(routes));
 
+  // удаляем линию с карты
+  if (displayedRoutes[index]) {
+    map.removeLayer(displayedRoutes[index]);
+  }
+
+  displayedRoutes.splice(index, 1);
+
   renderHistory();
 }
-function showRoute(index) {
+  function showRoute(index) {
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
   const r = routes[index];
 
