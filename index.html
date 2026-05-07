@@ -149,53 +149,70 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
   return R * c;
 }  
+
 function startTracking() {
-startTime = Date.now();
-totalDistance = 0;  
+
+  startTime = Date.now();
+  totalDistance = 0;
+
   route = [];
   firstLocation = true;
- 
+
   watchId = navigator.geolocation.watchPosition((pos) => {
+
     const { latitude, longitude } = pos.coords;
+
     const newPoint = [latitude, longitude];
+
     route.push(newPoint);
-const elapsed = Math.floor((Date.now() - startTime) / 1000);
-if (activeRoute && userRouteLine) {
-  const snapped = snapToRoute(newPoint, activeRoute);
-  userRouteLine.addLatLng(newPoint);
-}
-document.getElementById("stats").innerText =
-  `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${elapsed} сек`;
-// считаем расстояние
-if (route.length > 0) {
-  const last = route[route.length - 1];
 
-  totalDistance += getDistance(
-    last[0],
-    last[1],
-    latitude,
-    longitude
-  );
-}
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
-route.push(newPoint);
-routeLine.addLatLng(newPoint);
+    document.getElementById("stats").innerText =
+      `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${elapsed} сек`;
+
+    // считаем расстояние
+    if (route.length > 1) {
+
+      const last = route[route.length - 2];
+
+      totalDistance += getDistance(
+        last[0],
+        last[1],
+        latitude,
+        longitude
+      );
+    }
+
+    // 🔴 режим повторения маршрута
+    if (activeRoute && userRouteLine) {
+
+      const snapped = snapToRoute(newPoint, activeRoute);
+
+      userRouteLine.addLatLng(snapped);
+    }
+
     if (currentMarker) {
       map.removeLayer(currentMarker);
-  }
+    }
+
     currentMarker = L.marker(newPoint).addTo(map);
+
     if (firstLocation) {
       map.setView(newPoint, 16);
       firstLocation = false;
-  }
-  }, 
-   (err) => {
-     alert("Ошибка геолокации: " + err.message);
- },
- {
-     enableHighAccuracy: true
-   }
- );
+    }
+
+  },
+
+  (err) => {
+    alert("Ошибка геолокации: " + err.message);
+  },
+
+  {
+    enableHighAccuracy: true
+  });
+
 }
                                                  
   function stopTracking() {
