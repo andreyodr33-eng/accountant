@@ -278,22 +278,37 @@ function formatTime(sec) {
   const s = sec % 60;
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
+function redrawRoutes() {
+
+  displayedRoutes.forEach(line => {
+    map.removeLayer(line);
+  });
+
+  displayedRoutes = [];
+
+  const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+  routes.forEach((r) => {
+    const line = L.polyline(r.route, {
+      color: 'blue'
+    }).addTo(map);
+
+    displayedRoutes.push(line);
+  });
+}    
 function deleteRoute(index) {
+
   let routes = JSON.parse(localStorage.getItem('routes')) || [];
 
   routes.splice(index, 1);
 
   localStorage.setItem('routes', JSON.stringify(routes));
 
-  // удаляем линию с карты
-  if (displayedRoutes[index]) {
-    map.removeLayer(displayedRoutes[index]);
-  }
-
-  displayedRoutes.splice(index, 1);
+  redrawRoutes();
 
   renderHistory();
 }
+
   function showRoute(index) {
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
   const r = routes[index];
