@@ -132,6 +132,9 @@ let watchId;
 let route = [];
 let totalDistance = 0;
 let startTime = 0; 
+let routeLine = null;
+let userRouteLine = null;
+let activeRoute = null;  
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // радиус Земли в км
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -159,8 +162,11 @@ totalDistance = 0;
   watchId = navigator.geolocation.watchPosition((pos) => {
     const { latitude, longitude } = pos.coords;
     const newPoint = [latitude, longitude];
+    route.push(newPoint);
 const elapsed = Math.floor((Date.now() - startTime) / 1000);
-
+if (activeRoute && userRouteLine) {
+  userRouteLine.addLatLng(newPoint);
+}
 document.getElementById("stats").innerText =
   `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${elapsed} сек`;
 // считаем расстояние
@@ -198,7 +204,12 @@ routeLine.addLatLng(newPoint);
   function stopTracking() {
  
   navigator.geolocation.clearWatch(watchId);
-
+  activeRoute = null;
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+   }
+}
   if (currentMarker) {
     map.removeLayer(currentMarker);
     currentMarker = null;
@@ -326,6 +337,24 @@ function deleteRoute(index) {
 
   closeHistory();
 }
+  function repeatRoute(index) {
+  const routes = JSON.parse(localStorage.getItem('routes')) || [];
+  const r = routes[index];
+
+  activeRoute = r.route;
+
+  // удалить старые линии
+  if (routeLine) map.removeLayer(routeLine);
+  if (userRouteLine) map.removeLayer(userRouteLine);
+
+  // 🔵 оригинал
+  routeLine = L.polyline(activeRoute, { color: 'blue' }).addTo(map);
+
+  // 🔴 путь пользователя
+  userRouteLine = L.polyline([], { color: 'red' }).addTo(map);
+
+  map.fitBounds(routeLine.getBounds());
+}  
 </script>    
 </body>
 </html>
