@@ -118,7 +118,10 @@ html, body {
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-let map = L.map('map').setView([50.45, 30.52], 13); // Киев
+let firstLocation = true;  
+let map = L.map('map' , {
+  zoomControl: false
+}).setView([50.45, 30.52], 16); // Киев
 let routeLine;
 let displayedRoutes = [];  
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -172,17 +175,15 @@ if (route.length > 0) {
 }
 
 route.push(newPoint);
-    
-    
-    
-    
-    routeLine.addLatLng(newPoint);
+routeLine.addLatLng(newPoint);
     if (currentMarker) {
       map.removeLayer(currentMarker);
   }
     currentMarker = L.marker(newPoint).addTo(map);
-    map.setView(newPoint);
-  },
+    if (firstLocation) {
+      map.setView(newPoint, 16);
+      firstLocation = false;
+  }
    (err) => {
      alert("Ошибка геолокации: " + err.message);
  },
