@@ -165,6 +165,7 @@ totalDistance = 0;
     route.push(newPoint);
 const elapsed = Math.floor((Date.now() - startTime) / 1000);
 if (activeRoute && userRouteLine) {
+  const snapped = snapToRoute(newPoint, activeRoute);
   userRouteLine.addLatLng(newPoint);
 }
 document.getElementById("stats").innerText =
