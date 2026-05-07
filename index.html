@@ -218,25 +218,21 @@ function startTracking() {
   function stopTracking() {
  
   navigator.geolocation.clearWatch(watchId);
-  activeRoute = null;
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
-    userRouteLine = null;
-   }
 
   if (currentMarker) {
     map.removeLayer(currentMarker);
     currentMarker = null;
   }
-    if (totalDistance < 0.02) {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    
+  if (totalDistance < 0.02) {
       alert("Маршрут слишком короткий");
       return;
   }
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
-
-  let routes = JSON.parse(localStorage.getItem('routes')) || [];
-
-  routes.push({
+  
+  let routes = JSON.parse(localStorage.getItem('routes')) || [];   
+    
+ routes.push({
     route: route,
     distance: totalDistance,
     time: elapsed
