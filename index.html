@@ -363,6 +363,10 @@ function deleteRoute(index) {
   
  }
   closeHistory();
+  setTimeout(() => {
+    map.invalidateSize();
+    map.fitBounds(routeLine.getBounds());
+  }, 300);
 }
   function repeatRoute(index) {
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
