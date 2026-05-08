@@ -154,7 +154,10 @@ function startTracking() {
 
   startTime = Date.now();
   totalDistance = 0;
-
+  routeLine = L.polyline([], {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);    
   route = [];
   firstLocation = true;
  routeLine = L.polyline([], { color: 'blue' }).addTo(map);
