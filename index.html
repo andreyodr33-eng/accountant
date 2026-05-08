@@ -227,10 +227,7 @@ function startTracking() {
   }
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
     
-  if (totalDistance < 0.02) {
-      alert("Маршрут слишком короткий");
-      return;
-  }
+ 
   
   let routes = JSON.parse(localStorage.getItem('routes')) || [];   
     
