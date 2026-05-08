@@ -154,11 +154,7 @@ function startTracking() {
 
   startTime = Date.now();
   totalDistance = 0;
-  routeLine = L.polyline([], {
-    color: 'blue',
-    weight: 5
-  }).addTo(map);    
-  route = [];
+  routeLine = L.polyline([], { color: 'blue' }).addTo(map);
   firstLocation = true;
 
   watchId = navigator.geolocation.watchPosition((pos) => {
