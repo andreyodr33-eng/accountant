@@ -361,9 +361,21 @@ function deleteRoute(index) {
  }
   closeHistory();
   setTimeout(() => {
-    map.invalidateSize();
-    map.fitBounds(routeLine.getBounds());
-  }, 300);
+
+  map.invalidateSize(true);
+
+  map.fitBounds(
+    routeLine.getBounds(),
+    {
+      animate: false,
+      padding: [20, 20]
+    }
+  );
+
+  // 🔥 форс repaint Safari
+  map._onResize();
+
+}, 300);
 }
   function repeatRoute(index) {
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
