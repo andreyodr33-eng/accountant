@@ -355,13 +355,13 @@ function deleteRoute(index) {
   }
 
   routeLine = L.polyline(r.route, { color: 'blue' }).addTo(map);
-  if (r.route.length > 1) {
+  if (r.route.length > 2) {
   map.fitBounds(routeLine.getBounds());
   
  }
   closeHistory();
+    
   setTimeout(() => {
-
   map.invalidateSize(true);
 
   map.fitBounds(
