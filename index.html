@@ -160,7 +160,7 @@ function startTracking() {
   }).addTo(map);    
   route = [];
   firstLocation = true;
- routeLine = L.polyline([], { color: 'blue' }).addTo(map);
+
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
