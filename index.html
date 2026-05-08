@@ -174,7 +174,7 @@ function startTracking() {
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
     document.getElementById("stats").innerText =
-      `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${elapsed} сек`;
+      `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${formatTime(elapsed)}`;
 
     // считаем расстояние
     if (route.length > 1) {
