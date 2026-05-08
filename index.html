@@ -189,38 +189,7 @@ function startTracking() {
       );
     }
 
-    // 🔴 режим повторения маршрута
-    if (activeRoute && userRouteLine) {
-
-      const snapped = snapToRoute(newPoint, activeRoute);
-
-      userRouteLine.addLatLng(snapped);
-    }
-
-    if (currentMarker) {
-      map.removeLayer(currentMarker);
-    }
-
-    currentMarker = L.marker(newPoint).addTo(map);
-
-    if (firstLocation) {
-      map.setView(newPoint, 16);
-      firstLocation = false;
-    }
-
-  },
-
-  (err) => {
-    alert("Ошибка геолокации: " + err.message);
-  },
-
-  {
-    enableHighAccuracy: true
-  });
-
-}
-                                                 
-  function stopTracking() {
+     function stopTracking() {
  
   navigator.geolocation.clearWatch(watchId);
 
