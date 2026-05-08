@@ -151,9 +151,13 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }  
 
 function startTracking() {
-routeLine = L.polyline([], { color: 'blue' }).addTo(map);
+
   startTime = Date.now();
   totalDistance = 0;
+  routeLine = L.polyline([], {
+    color: 'red',
+    weight: 5
+  }).addTo(map);  
   
   firstLocation = true;
  
@@ -258,7 +262,10 @@ function closeHistory() {
     map.removeLayer(userRouteLine);
     userRouteLine = null;
    }
-  
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
 }
 </script>
 <script>
