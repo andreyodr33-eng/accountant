@@ -151,12 +151,12 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }  
 
 function startTracking() {
-
+routeLine = L.polyline([], { color: 'blue' }).addTo(map);
   startTime = Date.now();
   totalDistance = 0;
   
   firstLocation = true;
- routeLine = L.polyline([], { color: 'blue' }).addTo(map);
+ 
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
