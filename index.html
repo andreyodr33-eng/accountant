@@ -192,7 +192,16 @@ function getDistance(lat1, lon1, lat2, lon2) {
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
-
+    // Защита от битых координат
+    if (
+      typeof latitude !== "number" ||
+      typeof longitude !== "number" ||
+      isNaN(latitude) ||
+      isNaN(longitude)
+      ) }
+        return;
+  }
+    
     const newPoint = [latitude, longitude];
 
     route.push(newPoint);
@@ -254,11 +263,15 @@ function getDistance(lat1, lon1, lat2, lon2) {
   navigator.geolocation.clearWatch(watchId);
 
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
-
+  const cleanRoute = route.filter(p =>
+    Array.isArray(p) &&
+    typeof p[0] === "number" &&
+    typeof p[1] === "number"
+  );  
   let routes = JSON.parse(localStorage.getItem('routes')) || [];
 
   routes.push({
-    route: route,
+    route: cleanRoute,
     distance: totalDistance,
     time: elapsed
   });
