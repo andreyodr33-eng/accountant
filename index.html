@@ -295,17 +295,6 @@ function closeHistory() {
   document.getElementById("historyPanel")
     .classList.remove("active");
 
-  activeRoute = null;
-
-  if (routeLine) {
-    map.removeLayer(routeLine);
-    routeLine = null;
-  }
-
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
-    userRouteLine = null;
-  }
 }
 </script>
 <script>
