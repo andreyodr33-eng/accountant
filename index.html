@@ -151,6 +151,34 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }  
 
 function startTracking() {
+//Очистка старого маршрута
+ function startTracking() {
+
+  // очистка старого маршрута
+  route = [];
+
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
+
+  activeRoute = null;
+
+  startTime = Date.now();
+  totalDistance = 0;
+
+  routeLine = L.polyline([], {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);
+
+  firstLocation = true;
+ 
 
   startTime = Date.now();
   totalDistance = 0;
@@ -222,20 +250,14 @@ function startTracking() {
                                                  
 
      function stopTracking() {
- 
+
   navigator.geolocation.clearWatch(watchId);
 
-  if (currentMarker) {
-    map.removeLayer(currentMarker);
-    currentMarker = null;
-  }
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    
- 
-  
-  let routes = JSON.parse(localStorage.getItem('routes')) || [];   
-    
- routes.push({
+
+  let routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+  routes.push({
     route: route,
     distance: totalDistance,
     time: elapsed
@@ -247,6 +269,20 @@ function startTracking() {
 
   localStorage.setItem('routes', JSON.stringify(routes));
 
+  // удалить линию маршрута
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  // удалить красную линию
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
+
+  activeRoute = null;
+
   alert("Маршрут сохранён");
 } 
 function openHistory() {
@@ -255,15 +291,21 @@ function openHistory() {
 }
 
 function closeHistory() {
-  document.getElementById("historyPanel").classList.remove("active");
-  
+
+  document.getElementById("historyPanel")
+    .classList.remove("active");
+
   activeRoute = null;
-  
+
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
   if (userRouteLine) {
     map.removeLayer(userRouteLine);
     userRouteLine = null;
-   }
- 
+  }
 }
 </script>
 <script>
@@ -304,8 +346,18 @@ function renderHistory() {
     div.innerHTML = `
       <div>📏 ${r.distance.toFixed(2)} км</div>
       <div>⏱ ${formatTime(r.time)}</div>
-      <button onclick="showRoute(${index})">Открыть</button>
-      <button onclick="deleteRoute(${index})">Удалить</button>
+
+      <button onclick="showRoute(${index})">
+      Открыть
+      </button>
+
+      <button onclick="repeatRoute(${index})">
+      Повторить
+      </button>
+
+      <button onclick="deleteRoute(${index})">
+      Удалить
+      </button>
     `;
 
     list.appendChild(div);
@@ -342,68 +394,102 @@ function deleteRoute(index) {
 
   localStorage.setItem('routes', JSON.stringify(routes));
 
- redrawRoutes(); 
+  // убрать текущий маршрут с карты
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
 
   renderHistory();
 }
 
   function showRoute(index) {
+
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
   const r = routes[index];
 
+  // удалить старые линии
   if (routeLine) {
     map.removeLayer(routeLine);
   }
 
-  routeLine = L.polyline(r.route, { color: 'blue' }).addTo(map);
-  if (r.route.length > 2) {
-  map.fitBounds(routeLine.getBounds());
-  
- }
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+  }
+
+  // синяя линия маршрута
+  routeLine = L.polyline(r.route, {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);
+
+  // popup в конце маршрута
+  const lastPoint = r.route[r.route.length - 1];
+
+  L.marker(lastPoint)
+    .addTo(map)
+    .bindPopup(
+      `📏 ${r.distance.toFixed(2)} км<br>⏱ ${formatTime(r.time)}`
+    )
+    .openPopup();
+
+  map.fitBounds(routeLine.getBounds(), {
+    padding: [20, 20]
+  });
+
   closeHistory();
-    
-  setTimeout(() => {
-  map.invalidateSize(true);
-
-  map.fitBounds(
-    routeLine.getBounds(),
-    {
-      animate: false,
-      padding: [20, 20]
-    }
-  );
-
-  // 🔥 форс repaint Safari
-  map._onResize();
-
-}, 300);
 }
+
+  function snapToRoute(point, route) {
+     return point;
+}
+
   function repeatRoute(index) {
+
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
   const r = routes[index];
 
   activeRoute = r.route;
 
   // удалить старые линии
-  if (routeLine) map.removeLayer(routeLine);
-  if (userRouteLine) map.removeLayer(userRouteLine);
+  if (routeLine) {
+    map.removeLayer(routeLine);
+  }
 
-  // 🔵 оригинал
-  routeLine = L.polyline(activeRoute, { color: 'blue' }).addTo(map);
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+  }
 
-  // 🔴 путь пользователя
-  userRouteLine = L.polyline([], { color: 'red' }).addTo(map);
+  // оригинальный маршрут
+  routeLine = L.polyline(activeRoute, {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);
 
-  map.fitBounds(routeLine.getBounds());
-}  
+  // маршрут пользователя
+  userRouteLine = L.polyline([], {
+    color: 'red',
+    weight: 5
+  }).addTo(map);
+
+  map.fitBounds(routeLine.getBounds(), {
+    padding: [20, 20]
+  });
+
+  closeHistory();
+
+  // запуск GPS
+  startTracking();
+} 
 </script>    
 </body>
 </html>
 
      
-    
- 
-
-     
-    
- 
