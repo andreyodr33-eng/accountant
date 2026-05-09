@@ -462,42 +462,87 @@ function deleteRoute(index) {
 
   const r = routes[index];
 
+  if (!r || !r.route || r.route.length < 2) {
+    return;
+  }
+
   activeRoute = r.route;
 
   // удалить старые линии
-  if (routeLine) {
-    map.removeLayer(routeLine);
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
+    historyRouteLine = null;
   }
 
   if (userRouteLine) {
     map.removeLayer(userRouteLine);
+    userRouteLine = null;
   }
 
-  // оригинальный маршрут
+  // 🔵 СИНИЙ ЭТАЛОННЫЙ маршрут
+  historyRouteLine = L.polyline(activeRoute, {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);
+
+  // 🔴 КРАСНЫЙ маршрут пользователя
   userRouteLine = L.polyline([], {
     color: 'red',
     weight: 5
   }).addTo(map);
 
-  // маршрут пользователя
-  userRouteLine = L.polyline([], {
-    color: 'red',
-    weight: 5
-  }).addTo(map);
-
-  map.fitBounds(routeLine.getBounds(), {
+  map.fitBounds(historyRouteLine.getBounds(), {
     padding: [20, 20]
   });
 
   closeHistory();
 
-  // запуск GPS
-  startTracking();
-} 
- window.addEventListener('load', () => {
-   loadRoute();
-   renderHistory();
- });  
+  // остановить старый GPS watcher
+  navigator.geolocation.clearWatch(watchId);
+
+  // GPS режим повторения
+  watchId = navigator.geolocation.watchPosition(
+
+    (pos) => {
+
+      const { latitude, longitude } = pos.coords;
+
+      // защита
+      if (
+        typeof latitude !== "number" ||
+        typeof longitude !== "number" ||
+        isNaN(latitude) ||
+        isNaN(longitude)
+      ) {
+        return;
+      }
+
+      const point = [latitude, longitude];
+
+      // 🔴 рисуем красную линию
+      userRouteLine.addLatLng(point);
+
+      // перемещение маркера
+      if (currentMarker) {
+        map.removeLayer(currentMarker);
+      }
+
+      currentMarker = L.marker(point).addTo(map);
+
+    },
+
+    (err) => {
+      alert(err.message);
+    },
+
+    {
+      enableHighAccuracy: true
+    }
+
+  );
+}
+
+   
 </script>    
 </body>
 </html>
