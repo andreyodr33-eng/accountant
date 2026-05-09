@@ -477,6 +477,10 @@ function deleteRoute(index) {
   // запуск GPS
   startTracking();
 } 
+ window.onload = () => {
+   loadRoute();
+   renderHistory();
+ };  
 </script>    
 </body>
 </html>
