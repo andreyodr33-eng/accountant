@@ -123,6 +123,7 @@ let map = L.map('map' , {
   zoomControl: false
 }).setView([50.45, 30.52], 16); // Киев
 let routeLine;
+let historyRouteLine = null;  
 let displayedRoutes = [];  
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -156,6 +157,11 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
   // очистка старого маршрута
   route = [];
+
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
+    historyRouteLine = null;
+  }  
 
   if (routeLine) {
     map.removeLayer(routeLine);
@@ -413,25 +419,25 @@ function deleteRoute(index) {
   function showRoute(index) {
 
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
-
   const r = routes[index];
 
-  // удалить старые линии
-  if (routeLine) {
-    map.removeLayer(routeLine);
+  if (!r || !r.route || r.route.length < 2) {
+    return;
   }
 
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
+  // удалить старый history маршрут
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
   }
 
-  // синяя линия маршрута
-  routeLine = L.polyline(r.route, {
+  // показать history маршрут
+  historyRouteLine = L.polyline(r.route, {
     color: 'blue',
     weight: 5
   }).addTo(map);
 
-  // popup в конце маршрута
+  map.fitBounds(historyRouteLine.getBounds());
+
   const lastPoint = r.route[r.route.length - 1];
 
   L.marker(lastPoint)
@@ -441,12 +447,10 @@ function deleteRoute(index) {
     )
     .openPopup();
 
-  map.fitBounds(routeLine.getBounds(), {
-    padding: [20, 20]
-  });
-
   closeHistory();
 }
+
+  
 
   function snapToRoute(point, route) {
      return point;
@@ -470,8 +474,8 @@ function deleteRoute(index) {
   }
 
   // оригинальный маршрут
-  routeLine = L.polyline(activeRoute, {
-    color: 'blue',
+  userRouteLine = L.polyline([], {
+    color: 'red',
     weight: 5
   }).addTo(map);
 
