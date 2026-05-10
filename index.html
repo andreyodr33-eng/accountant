@@ -135,7 +135,7 @@ let totalDistance = 0;
 let startTime = 0; 
 let userRouteLine = null;
 let activeRoute = null;
-let = gpsWarmup = 0;  
+  
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // радиус Земли в км
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -184,7 +184,7 @@ function clearMapState() {
 }
 
 function startTracking() {
-gpsWarmup = 0;
+
   // очистка старого маршрута
    
   route = [];
@@ -214,10 +214,7 @@ gpsWarmup = 0;
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
-    gpsWarmup++;
-    if (gpsWarmup < 3) {
-      return;
-    }  
+      
     // Защита от битых координат
     if (
       typeof latitude !== "number" ||
