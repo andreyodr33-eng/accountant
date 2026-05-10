@@ -97,19 +97,20 @@ html, body {
 .history-actions {
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  width: 100%;
+ 
 }
 
 .history-actions button {
   flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
   border: none;
   border-radius: 10px;
   padding: 12px;
   font-size: 15px;
   color: white;
-  box-sizing: border-box;
-}
-
+ }
 /* открыть */
 .open-btn {
   background: #1E88E5;
