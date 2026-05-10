@@ -233,7 +233,7 @@ function clearMapState() {
       longitude,
       accuracy
     } = pos.coords;
-    if (accuracy > 35) {
+    if (accuracy > 55) {
       return;
     }  
     // Защита от битых координат
