@@ -182,14 +182,29 @@ function clearMapState() {
     "Дистанция: 0 км | Время: 0 сек";
 }
 
-//Очистка старого маршрута
- function startTracking() {
+function startTracking() {
 
   // очистка старого маршрута
-  clearMapState();  
+  clearMapState(); 
   route = [];
+
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
+    historyRouteLine = null;
+  }  
+
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
+
   activeRoute = null;
-   
+
   startTime = Date.now();
   totalDistance = 0;
 
@@ -199,35 +214,33 @@ function clearMapState() {
   }).addTo(map);
 
   firstLocation = true;
-   
-  watchId = navigator.geolocation.watchPosition((pos) => {
-   const {
-      latitude,
-      longitude,
-      accuracy
-    } = pos.coords;
-    const newPoint = [latitude, longitude];
-     
-    
-    if (currentMarker) {
-      map.removeLayer(currentMarker);
-    }
-    currentMarker = L.marker(newPoint).addTo(map);
+ 
 
-     if (accuracy > 35) {
-       return;
-     }   
-      if (
+  startTime = Date.now();
+  totalDistance = 0;
+  routeLine = L.polyline([], {
+    color: 'blue',
+    weight: 5
+  }).addTo(map);  
+  
+  firstLocation = true;
+ 
+  watchId = navigator.geolocation.watchPosition((pos) => {
+
+    const { latitude, longitude } = pos.coords;
+    // Защита от битых координат
+    if (
       typeof latitude !== "number" ||
       typeof longitude !== "number" ||
       isNaN(latitude) ||
       isNaN(longitude)
-  )  return;
+  ) {
+        return;
+  }
     
-   
-    
+    const newPoint = [latitude, longitude];
+
     route.push(newPoint);
-    
    if (routeLine) {
      routeLine.addLatLng(newPoint);
    }
@@ -235,6 +248,7 @@ function clearMapState() {
 
     document.getElementById("stats").innerText =
       `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${formatTime(elapsed)}`;
+
     // считаем расстояние
     if (route.length > 1) {
 
@@ -247,7 +261,7 @@ function clearMapState() {
         longitude
       );
     }
-   
+
     // 🔴 режим повторения маршрута
     if (activeRoute && userRouteLine) {
 
@@ -275,12 +289,10 @@ function clearMapState() {
 
   {
     enableHighAccuracy: true
-  }
- );    
-}
-                                                 
+  });
 
-     function stopTracking() {
+}
+ function stopTracking() {
 
   navigator.geolocation.clearWatch(watchId);
 
