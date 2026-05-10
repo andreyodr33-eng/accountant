@@ -228,7 +228,14 @@ function clearMapState() {
  
   watchId = navigator.geolocation.watchPosition((pos) => {
 
-    const { latitude, longitude } = pos.coords;
+    const {
+      latitude,
+      longitude,
+      accuracy
+    } = pos.coords;
+    if (accuracy > 20) {
+      return;
+    }  
     // Защита от битых координат
     if (
       typeof latitude !== "number" ||
