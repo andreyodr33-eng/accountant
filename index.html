@@ -275,7 +275,29 @@ function getDistance(lat1, lon1, lat2, lon2) {
     typeof p[1] === "number"
   );  
   let routes = JSON.parse(localStorage.getItem('routes')) || [];
+  // не сохранять слишком короткие маршруты
+if (route.length < 2 || totalDistance < 0.01) {
 
+  // очистка линий
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
+    historyRouteLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
+
+  alert("Маршрут слишком короткий");
+
+  return;
+}
   routes.push({
     route: cleanRoute,
     distance: totalDistance,
