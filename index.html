@@ -188,14 +188,8 @@ function clearMapState() {
   // очистка старого маршрута
   clearMapState();  
   route = [];
-
-  if (historyRouteLine) {
-    map.removeLayer(historyRouteLine);
-    historyRouteLine = null;
-  }  
-
   activeRoute = null;
-
+   
   startTime = Date.now();
   totalDistance = 0;
 
@@ -205,43 +199,25 @@ function clearMapState() {
   }).addTo(map);
 
   firstLocation = true;
- 
-
-  startTime = Date.now();
-  totalDistance = 0;
-  routeLine = L.polyline([], {
-    color: 'blue',
-    weight: 5
-  }).addTo(map);  
-  
-  firstLocation = true;
- 
+   
   watchId = navigator.geolocation.watchPosition((pos) => {
-
-    const {
+   const {
       latitude,
       longitude,
       accuracy
     } = pos.coords;
-    const newPoint = [latitude, longitude];
-    if (currentMarker) {
-      map.removeLayer(currentMarker);
-    }
-    currentMarker = L.marker(newPoint).addTo(map);
-    if (accuracy > 35) {
-      return;
-    }  
-    // Защита от битых координат
-    if (
+    if (accuracy > 35)  return;
+      if (
       typeof latitude !== "number" ||
       typeof longitude !== "number" ||
       isNaN(latitude) ||
       isNaN(longitude)
-  ) {
-        return;
-  }
+  )  return;
     
-   route.push(newPoint);
+    const newPoint = [latitude, longitude];
+    
+    route.push(newPoint);
+    
    if (routeLine) {
      routeLine.addLatLng(newPoint);
    }
@@ -249,7 +225,6 @@ function clearMapState() {
 
     document.getElementById("stats").innerText =
       `Дистанция: ${totalDistance.toFixed(2)} км | Время: ${formatTime(elapsed)}`;
-
     // считаем расстояние
     if (route.length > 1) {
 
@@ -263,6 +238,7 @@ function clearMapState() {
       );
     }
   });
+ }   
     // 🔴 режим повторения маршрута
     if (activeRoute && userRouteLine) {
 
