@@ -206,7 +206,17 @@ function clearMapState() {
       longitude,
       accuracy
     } = pos.coords;
-    if (accuracy > 35)  return;
+    const newPoint = [latitude, longitude];
+     
+    
+    if (currentMarker) {
+      map.removeLayer(currentMarker);
+    }
+    currentMarker = L.marker(newPoint).addTo(map);
+
+     if (accuracy > 35) {
+       return;
+     }   
       if (
       typeof latitude !== "number" ||
       typeof longitude !== "number" ||
@@ -214,7 +224,7 @@ function clearMapState() {
       isNaN(longitude)
   )  return;
     
-    const newPoint = [latitude, longitude];
+   
     
     route.push(newPoint);
     
