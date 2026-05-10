@@ -185,7 +185,7 @@ function clearMapState() {
 function startTracking() {
 
   // очистка старого маршрута
-  clearMapState(); 
+   
   route = [];
 
   if (historyRouteLine) {
@@ -196,11 +196,6 @@ function startTracking() {
   if (routeLine) {
     map.removeLayer(routeLine);
     routeLine = null;
-  }
-
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
-    userRouteLine = null;
   }
 
   activeRoute = null;
@@ -214,17 +209,7 @@ function startTracking() {
   }).addTo(map);
 
   firstLocation = true;
- 
-
-  startTime = Date.now();
-  totalDistance = 0;
-  routeLine = L.polyline([], {
-    color: 'blue',
-    weight: 5
-  }).addTo(map);  
   
-  firstLocation = true;
- 
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
@@ -235,7 +220,7 @@ function startTracking() {
       isNaN(latitude) ||
       isNaN(longitude)
   ) {
-        return;
+     return;
   }
     
     const newPoint = [latitude, longitude];
