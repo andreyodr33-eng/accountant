@@ -122,7 +122,24 @@ html, body {
 /* удалить */
 .delete-btn {
   background: #E53935;
-}    
+} 
+.close-history-btn {
+  width: 100%;
+  margin-top: 15px;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+
+  background: #424242;
+  color: white;
+} 
+.close-history-btn:active {
+  transform: scale(0.98);
+}  
   </style>
 </head>
 <body>
@@ -134,7 +151,11 @@ html, body {
 <div id="historyPanel" class="history-panel">
   <h3>История маршрутов</h3>
   <div id="historyList"></div>
-  <button onclick="closeHistory()">Закрыть</button>
+  <button
+  class="close-history-btn"   
+  onclick="closeHistory()">
+  Закрыть
+  </button>
 </div>
 
 <div class="controls">
