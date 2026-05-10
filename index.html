@@ -150,7 +150,37 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
   return R * c;
 }  
+function clearMapState() {
 
+  // линии
+  if (routeLine) {
+    map.removeLayer(routeLine);
+    routeLine = null;
+  }
+
+  if (historyRouteLine) {
+    map.removeLayer(historyRouteLine);
+    historyRouteLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
+  }
+
+  // маркер
+  if (currentMarker) {
+    map.removeLayer(currentMarker);
+    currentMarker = null;
+  }
+
+  // popup
+  map.closePopup();
+
+  // статистика
+  document.getElementById("stats").innerText =
+    "Дистанция: 0 км | Время: 0 сек";
+}
 
 //Очистка старого маршрута
  function startTracking() {
@@ -278,21 +308,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
   // не сохранять слишком короткие маршруты
 if (route.length < 2 || totalDistance < 0.01) {
 
-  // очистка линий
-  if (routeLine) {
-    map.removeLayer(routeLine);
-    routeLine = null;
-  }
-
-  if (historyRouteLine) {
-    map.removeLayer(historyRouteLine);
-    historyRouteLine = null;
-  }
-
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
-    userRouteLine = null;
-  }
+  clearMapState();
 
   alert("Маршрут слишком короткий");
 
@@ -311,10 +327,7 @@ if (route.length < 2 || totalDistance < 0.01) {
   localStorage.setItem('routes', JSON.stringify(routes));
 
   // удалить линию маршрута
-  if (routeLine) {
-    map.removeLayer(routeLine);
-    routeLine = null;
-  }
+  clearMapState();
 
   // удалить красную линию
   if (userRouteLine) {
