@@ -323,7 +323,31 @@ if (route.length < 2 || totalDistance < 0.01) {
   }
 
   activeRoute = null;
- 
+ // удалить все линии
+if (routeLine) {
+  map.removeLayer(routeLine);
+  routeLine = null;
+}
+
+if (historyRouteLine) {
+  map.removeLayer(historyRouteLine);
+  historyRouteLine = null;
+}
+
+if (userRouteLine) {
+  map.removeLayer(userRouteLine);
+  userRouteLine = null;
+}
+
+// удалить маркер геолокации
+if (currentMarker) {
+  map.removeLayer(currentMarker);
+  currentMarker = null;
+}
+
+// сброс статистики
+document.getElementById("stats").innerText =
+  "Дистанция: 0 км | Время: 0 сек";
   alert("Маршрут сохранён");
 } 
 function openHistory() {
