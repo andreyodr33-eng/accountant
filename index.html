@@ -323,7 +323,21 @@ if (route.length < 2 || totalDistance < 0.01) {
   }
 
   activeRoute = null;
+ // удалить все линии
+if (routeLine) {
+  map.removeLayer(routeLine);
+  routeLine = null;
+}
 
+if (historyRouteLine) {
+  map.removeLayer(historyRouteLine);
+  historyRouteLine = null;
+}
+
+if (userRouteLine) {
+  map.removeLayer(userRouteLine);
+  userRouteLine = null;
+}
   alert("Маршрут сохранён");
 } 
 function openHistory() {
