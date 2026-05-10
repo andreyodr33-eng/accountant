@@ -194,16 +194,6 @@ function clearMapState() {
     historyRouteLine = null;
   }  
 
-  if (routeLine) {
-    map.removeLayer(routeLine);
-    routeLine = null;
-  }
-
-  if (userRouteLine) {
-    map.removeLayer(userRouteLine);
-    userRouteLine = null;
-  }
-
   activeRoute = null;
 
   startTime = Date.now();
@@ -233,7 +223,12 @@ function clearMapState() {
       longitude,
       accuracy
     } = pos.coords;
-    if (accuracy > 60) {
+    const newPoint = [latitude, longitude];
+    if (currentMarker) {
+      map.removeLayer(currentMarker);
+    }
+    currentMarker = L.marker(newPoint).addTo(map);
+    if (accuracy > 35) {
       return;
     }  
     // Защита от битых координат
@@ -246,9 +241,7 @@ function clearMapState() {
         return;
   }
     
-    const newPoint = [latitude, longitude];
-
-    route.push(newPoint);
+   route.push(newPoint);
    if (routeLine) {
      routeLine.addLatLng(newPoint);
    }
@@ -269,7 +262,7 @@ function clearMapState() {
         longitude
       );
     }
-
+  });
     // 🔴 режим повторения маршрута
     if (activeRoute && userRouteLine) {
 
