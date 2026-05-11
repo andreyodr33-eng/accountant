@@ -282,10 +282,11 @@ function startTracking() {
     
     const newPoint = [latitude, longitude];
     
-    route.push(newPoint);
-   if (routeLine) {
-     routeLine.addLatLng(newPoint);
-   }
+    const snapped = snapToRoute(newPoint, route);
+    route.push(snapped);
+    if (routeLine) {
+    routeLine.addLatLng(snapped);
+  }
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
     document.getElementById("stats").innerText =
