@@ -341,10 +341,10 @@ function updateArrow(direction) {
   }
 }
 
+
 function startTracking() {
 
   // очистка старого маршрута
-   
   route = [];
 
   if (historyRouteLine) {
@@ -355,6 +355,11 @@ function startTracking() {
   if (routeLine) {
     map.removeLayer(routeLine);
     routeLine = null;
+  }
+
+  if (userRouteLine) {
+    map.removeLayer(userRouteLine);
+    userRouteLine = null;
   }
 
   activeRoute = null;
@@ -368,11 +373,15 @@ function startTracking() {
   }).addTo(map);
 
   firstLocation = true;
-  
+ 
+ startTime = Date.now();
+  totalDistance = 0;
+    
+ firstLocation = true;
+ 
   watchId = navigator.geolocation.watchPosition((pos) => {
 
     const { latitude, longitude } = pos.coords;
-      
     // Защита от битых координат
     if (
       typeof latitude !== "number" ||
@@ -380,21 +389,15 @@ function startTracking() {
       isNaN(latitude) ||
       isNaN(longitude)
   ) {
-     return;
+        return;
   }
     
     const newPoint = [latitude, longitude];
-    let prevPoint = null;
-    if (route.lenght > 0) {
-      prevPoint = route[route.length - 1];
-    }
-    detectRouteDirection(newPoint, prevPoint);
-    
-    const snapped = snapToRoute(newPoint, route);
-    route.push(snapped);
-    if (routeLine) {
-    routeLine.addLatLng(snapped);
-  }
+
+    route.push(newPoint);
+   if (routeLine) {
+     routeLine.addLatLng(newPoint);
+   }
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
     document.getElementById("stats").innerText =
@@ -443,6 +446,7 @@ function startTracking() {
   });
 
 }
+                                                 
  function stopTracking() {
 
   navigator.geolocation.clearWatch(watchId);
