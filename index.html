@@ -266,6 +266,39 @@ function clearMapState() {
   document.getElementById("stats").innerText =
     "Дистанция: 0 км | Время: 0 сек";
 }
+ function snapToRoute(point, route) {
+
+  if (route.length < 1) {
+    return point;
+  }
+
+  const last = route[route.length - 1];
+
+  const lat = (last[0] + point[0]) / 2;
+  const lng = (last[1] + point[1]) / 2;
+
+  return [lat, lng];
+} 
+function updateArrow(direction) {
+
+  const arrow = document.getElementById("directionArrow");
+
+  if (direction === "forward") {
+    arrow.innerText = "↑";
+  }
+
+  if (direction === "right") {
+    arrow.innerText = "→";
+  }
+
+  if (direction === "left") {
+    arrow.innerText = "←";
+  }
+
+  if (direction === "back") {
+    arrow.innerText = "↓";
+  }
+}
 
 function startTracking() {
 
@@ -563,20 +596,6 @@ function deleteRoute(index) {
 
   closeHistory();
 }
- function snapToRoute(point, route) {
-
-  if (route.length < 1) {
-    return point;
-  }
-
-  const last = route[route.length - 1];
-
-  const lat = (last[0] + point[0]) / 2;
-  const lng = (last[1] + point[1]) / 2;
-
-  return [lat, lng];
-} 
-
   function repeatRoute(index) {
 
   const routes = JSON.parse(localStorage.getItem('routes')) || [];
