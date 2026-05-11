@@ -145,14 +145,43 @@ html, body {
 } 
 .close-history-btn:active {
   transform: scale(0.98);
-}  
+}
+.direction-arrow {
+  position: fixed;
+
+  top: 15px;
+  left: 15px;
+
+  width: 50px;
+  height: 50px;
+
+  background: rgba(0,0,0,0.6);
+
+  color: white;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+  font-weight: bold;
+
+  z-index: 3000;
+}    
   </style>
 </head>
 <body>
 
 <p id="stats" class="stats-overlay">
+  
   Дистанция: 0 км | Время: 0 сек
 </p>
+<div id="directionArrow" class="direction-arrow">
+  ↑
+</div>
+  
 <div id="map"></div>  
 <div id="historyPanel" class="history-panel">
   <h3>История маршрутов</h3>
