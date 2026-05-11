@@ -535,11 +535,19 @@ function deleteRoute(index) {
   closeHistory();
 }
 
-  
+ function snapToRoute(point, route) {
 
-  function snapToRoute(point, route) {
-     return point;
-}
+  if (route.length < 1) {
+    return point;
+  }
+
+  const last = route[route.length - 1];
+
+  const lat = (last[0] + point[0]) / 2;
+  const lng = (last[1] + point[1]) / 2;
+
+  return [lat, lng];
+} 
 
   function repeatRoute(index) {
 
