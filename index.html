@@ -345,7 +345,7 @@ function startTracking() {
     typeof p[0] === "number" &&
     typeof p[1] === "number"
   );  
-  let routes = JSON.parse(localStorage.getItem('routes')) || [];
+  
   // не сохранять слишком короткие маршруты
 if (route.length < 2 || totalDistance < 0.01) {
 
@@ -355,6 +355,7 @@ if (route.length < 2 || totalDistance < 0.01) {
 
   return;
 }
+let routes = JSON.parse(localStorage.getItem('routes')) || [];  
   routes.push({
     route: cleanRoute,
     distance: totalDistance,
