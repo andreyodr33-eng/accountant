@@ -216,7 +216,7 @@ let totalDistance = 0;
 let startTime = 0; 
 let userRouteLine = null;
 let activeRoute = null;
-let baseHeading = null;
+
   
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // радиус Земли в км
@@ -580,17 +580,7 @@ function deleteRoute(index) {
   }
 
   activeRoute = r.route;
-// направление маршрута
-if (activeRoute.length > 20) {
 
-  const startPoint = activeRoute[0];
-  const targetPoint = activeRoute[20];
-
-  baseHeading = Math.atan2(
-    targetPoint[1] - startPoint[1],
-    targetPoint[0] - startPoint[0]
-  );
-}
   // удалить старые линии
   if (historyRouteLine) {
     map.removeLayer(historyRouteLine);
