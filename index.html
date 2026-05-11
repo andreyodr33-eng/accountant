@@ -279,6 +279,46 @@ function clearMapState() {
 
   return [lat, lng];
 } 
+ function detectRouteDirection(currentPoint, prevPoint) {
+
+  if (!baseHeading || !prevPoint) {
+    return;
+  }
+
+  // направление движения пользователя
+  const movementAngle = Math.atan2(
+    currentPoint[1] - prevPoint[1],
+    currentPoint[0] - prevPoint[0]
+  );
+
+  // разница углов
+  const diff = movementAngle - baseHeading;
+
+  // нормализация
+  const angle = Math.atan2(
+    Math.sin(diff),
+    Math.cos(diff)
+  );
+
+  // назад
+  if (Math.abs(angle) > Math.PI * 0.75) {
+    updateArrow("back");
+    return;
+  }
+
+  // вперёд
+  if (Math.abs(angle) < Math.PI / 4) {
+    updateArrow("forward");
+    return;
+  }
+
+  // вправо
+  if (angle > 0) {
+    updateArrow("right");
+  } else {
+    updateArrow("left");
+  }
+} 
 function updateArrow(direction) {
 
   const arrow = document.getElementById("directionArrow");
@@ -343,6 +383,11 @@ function startTracking() {
   }
     
     const newPoint = [latitude, longitude];
+    let prevPoint = null;
+    if (route.lenght > 0) {
+      prevPoint = route[route.length - 1];
+    }
+    detectRouteDirection(newPoint, prevPoint);
     
     const snapped = snapToRoute(newPoint, route);
     route.push(snapped);
