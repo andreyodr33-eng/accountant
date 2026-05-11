@@ -563,7 +563,26 @@ function deleteRoute(index) {
 
   closeHistory();
 }
+function updateArrow(direction) {
 
+  const arrow = document.getElementById("directionArrow");
+
+  if (direction === "forward") {
+    arrow.innerText = "↑";
+  }
+
+  if (direction === "right") {
+    arrow.innerText = "→";
+  }
+
+  if (direction === "left") {
+    arrow.innerText = "←";
+  }
+
+  if (direction === "back") {
+    arrow.innerText = "↓";
+  }
+}
  function snapToRoute(point, route) {
 
   if (route.length < 1) {
@@ -665,7 +684,8 @@ function deleteRoute(index) {
 }
 
    
-</script>    
+</script> 
+  
 </body>
 </html>
 
