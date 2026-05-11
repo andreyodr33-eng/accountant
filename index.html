@@ -281,24 +281,7 @@ function startTracking() {
   }
     
     const newPoint = [latitude, longitude];
-    // защита от стартового скачка GPS
- if (route.length === 1) {
-
-  const first = route[0];
-
-  const jump = getDistance(
-    first[0],
-    first[1],
-    latitude,
-    longitude
-  );
-
-  // если первый скачок слишком большой
-  if (jump > 0.05) {
-    route[0] = newPoint;
-    return;
-  }
-}
+    
     route.push(newPoint);
    if (routeLine) {
      routeLine.addLatLng(newPoint);
