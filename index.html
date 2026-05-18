@@ -217,9 +217,7 @@
             const start = [pos.coords.latitude, pos.coords.longitude];
 
             routingControl = L.Routing.control({
-              createMarker: function() {
-                return null;
-              },  
+                
                  waypoints: [
                 L.latLng(start[0], start[1]),
                 L.latLng(targetPoint[0], targetPoint[1])
