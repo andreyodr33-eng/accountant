@@ -248,9 +248,11 @@
 
           const timeMin =
             Math.round(route.summary.totalTime / 60);
-
-          document.getElementById("routeInfo").innerText =
-            distanceKm + " км • " + timeMin + " мин";
+            if (isRepeatingRoute) {
+              isRepeatingRoute = false;
+              return;
+           }
+            
           saveRouteHistory(
             document.getElementById("addressInput").value,
             distanceKm,
@@ -258,8 +260,8 @@
             targetPoint
          );
         });
-       });
-      }
+       
+      
         function saveRouteHistory(address, distance, time, point) {
 
           routeHistory.unshift({
