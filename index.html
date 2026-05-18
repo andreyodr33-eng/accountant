@@ -146,6 +146,7 @@
             maxZoom: 19
           }
         ).addTo(map);
+        let routeSaved = false;
         let isRepeatingRoute = false;
         let currentMarker = null;
         let routingControl = null;
@@ -255,7 +256,8 @@
               isRepeatingRoute = false;
               return;
            }
-           
+           if (routeSaved) return
+            routeSaved = true;
           saveRouteHistory(
             document.getElementById("addressInput").value,
             distanceKm,
