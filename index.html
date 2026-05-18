@@ -157,7 +157,7 @@
         let routeHistory =
           JSON.parse(localStorage.getItem("routeHistory")) || [];
         let firstUpdate = true;
-
+        let isRepeatingRoute = false;
         userTrackLine = L.polyline([], {
           color: 'red',
           weight: 6
@@ -194,10 +194,13 @@
           }
 
           targetMarker = L.marker(targetPoint).addTo(map);
-
+          isRepeatingRoute = true;
           alert("Цель установлена");
           buildRoute();
+          document.getElementById("historyMenu").style.display =
+            "none";
         }
+        
         function buildRoute() {
 
           if (!targetPoint || !currentMarker) {
@@ -252,16 +255,16 @@
               isRepeatingRoute = false;
               return;
            }
-            
+       if (!isRepeatingRoute) {     
           saveRouteHistory(
             document.getElementById("addressInput").value,
             distanceKm,
             timeMin,
             targetPoint
          );
-        });
-       });
-      
+        } else {
+          isRepeatingRoute = false;
+       }
         function saveRouteHistory(address, distance, time, point) {
 
           routeHistory.unshift({
