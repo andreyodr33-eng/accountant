@@ -255,16 +255,14 @@
               isRepeatingRoute = false;
               return;
            }
-       if (!isRepeatingRoute) {     
+           
           saveRouteHistory(
             document.getElementById("addressInput").value,
             distanceKm,
             timeMin,
             targetPoint
          );
-        } else {
-          isRepeatingRoute = false;
-       }
+        });
         function saveRouteHistory(address, distance, time, point) {
 
           routeHistory.unshift({
