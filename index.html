@@ -3070,13 +3070,28 @@
       // --------------------
       // АУДИО
       // --------------------
-      function speak() {
-        let utter = new SpeechSynthesisUtterance(current.en);
-        utter.lang = "en-US";
-        speechSynthesis.speak(utter);
-      }
+        function speak(){
+    
+       const utterance = new SpeechSynthesisUtterance(current.en);
 
-      function initDB() {
+        utterance.lang = "en-US";
+        utterance.rate = 0.9;
+        utterance.volume = 1;
+        const voices = speechSynthesis.getVoices();
+
+        const englishVoice = voices.find(v =>
+        v.lang.includes("en")
+ );
+
+    if(englishVoice){
+        utterance.voice = englishVoice;
+ }
+
+
+    speechSynthesis.speak(utterance);
+  }
+
+       function initDB() {
         let request = indexedDB.open("EnglishCardsDB", 1);
 
         request.onupgradeneeded = function (event) {
