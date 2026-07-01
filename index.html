@@ -49,6 +49,15 @@
         background: #dc3545 !important;
         color: white;
       }
+        #topicLabel {
+           color: #00BFFF;
+           text-shadow: 0 0 5px #00BFFF,
+                        0 0 10px  #00BFFF,
+                        0 0 20px  #00BFFF;
+      }
+       .hint-btn {
+           color: #00BFFF;
+      }
     </style>
   </head>
 
@@ -60,7 +69,7 @@
     <div id="options"></div>
 
     <button onclick="speak()" class="btn">🔊 звук</button>
-    <button onclick="showHint()" class="btn">Подсказка</button>
+    <button onclick="showHint()" class="btn hint-btn">Подсказка</button>
     <button onclick="showDiagnostics()">📊</button>
     <p>Счёт: <span id="score">0</span></p>
 
