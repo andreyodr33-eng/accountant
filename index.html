@@ -2974,8 +2974,16 @@
         let tx = db.transaction("state", "readwrite");
         tx.objectStore("state").put(state);
       }
-      function getWord() {
+       function getWord() {
         let sourceWords = getCurrentWords();
+        const unseen = sourceWords.filter(
+          w => (w.shown || 0) === 0
+      );
+        if (unseen.length > 0) {
+          return unseen[
+            Math.floor(Math.random() * unseen.length)
+         ];
+      }
 
         if (sourceWords.length === 0) {
           return null;
@@ -3001,7 +3009,8 @@
 
         return selected;
       }
-      function loadState() {
+  
+           function loadState() {
 
         let tx = db.transaction("state", "readonly");
 
