@@ -1005,6 +1005,36 @@
           hints: 0,
         },
 
+          // тема ежедневное общение
+         { en: "Really?", ru: "Правда?", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "No way!", ru: "Да ладно!", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Sounds good", ru: "Звучит хорошо", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "I don't know", ru: "Я не знаю", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Maybe", ru: "Может быть", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+
+        { en: "Of course", ru: "Конечно", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "I think so", ru: "Я так думаю", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "I don't think so", ru: "Я так не думаю", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "You're right", ru: "Ты прав", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Exactly", ru: "Точно", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+
+        { en: "I agree", ru: "Я согласен", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Not really", ru: "Не совсем", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "It depends", ru: "Это зависит", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "No problem", ru: "Без проблем", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Never mind", ru: "Неважно", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+
+        { en: "Good idea", ru: "Хорошая идея", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "That's a good point", ru: "Это хороший аргумент", topic: "everyday", weight: 4, shown: 0, errors: 0, hints: 0 },
+        { en: "I see", ru: "Понятно", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Got it", ru: "Понял", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "That makes sense", ru: "В этом есть смысл", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+
+        { en: "What's going on?", ru: "Что происходит?", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "How's it going?", ru: "Как дела?", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "I'm not sure", ru: "Я не уверен", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "We'll see", ru: "Посмотрим", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
+        { en: "Let's go", ru: "Пошли", topic: "everyday", weight: 5, shown: 0, errors: 0, hints: 0 },
         // тема знакомства
         {
           en: "What is your name?",
@@ -2813,6 +2843,7 @@
         "greetings",
         "introduction",
         "shopping",
+        "everyday",  
       ];
 
       let current = null;
@@ -2874,6 +2905,9 @@
 
           case "greetings":
             return "Приветствие";
+
+          case "everyday":
+            return " Ежедневно";   
 
           case "verbs":
             return "⚡ Глаголы A1";
