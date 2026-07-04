@@ -472,7 +472,8 @@
         "greetings",
         "introduction",
         "shopping",
-        "everyday",  
+        "everyday",
+        "food",
       ];
 
       let current = null;
@@ -527,16 +528,19 @@
 
         switch (currentTopic) {
           case "shopping":
-            return "Покупки";
+            return "🛒 Покупки";
+
+          case "food":
+            return "🍕 еда";
 
           case "introduction":
-            return "💬Знакомства";
+            return " 🤝 Знакомства";
 
           case "greetings":
-            return "Приветствие";
+            return "👋 Приветствие";
 
           case "everyday":
-            return " Ежедневно";   
+            return "💬Ежедневно";
 
           case "verbs":
             return "⚡ Глаголы A1";
@@ -546,6 +550,7 @@
 
           default:
             return "📚 Все слова";
+
         }
       }
       let hintUsed = false;
