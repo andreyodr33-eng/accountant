@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tracker-cache-v2';
+const CACHE_NAME = 'Talkatoo-v2';
 const APP_FILES = [
     "./",
     "./index.html",
